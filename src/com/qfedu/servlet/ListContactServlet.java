@@ -62,7 +62,7 @@ public class ListContactServlet extends HttpServlet {
 				html += "<td>";
 				html += "<a href='"+request.getContextPath()+"/DeleteContactServlet?id="+contact.getId()+"'>É¾³ý</a>";
 				html += "|";
-				html += "<a href=''>ÐÞ¸Ä</a>";
+				html += "<a href='"+request.getContextPath()+"/QueryContactServlet?id="+contact.getId()+"'>ÐÞ¸Ä</a>";
 				html += "</td>";
 				html += "</tr>";
 			}

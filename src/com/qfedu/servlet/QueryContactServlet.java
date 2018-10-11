@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.qfedu.dao.ContactDao;
+import com.qfedu.dao.impl.ContactDaoimplements;
+import com.qfedu.entity.Contact;
+
 public class QueryContactServlet extends HttpServlet {
 
 	/**
@@ -22,19 +26,18 @@ public class QueryContactServlet extends HttpServlet {
 		 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
-		out.println("  <BODY>");
-		out.print("    This is ");
-		out.print(this.getClass());
-		out.println(", using the GET method");
-		out.println("  </BODY>");
-		out.println("</HTML>");
-		out.flush();
-		out.close();
+		//1、获取到update的id
+		int id = Integer.valueOf(request.getParameter("id"));
+		
+		//2、查询到这个id对应的信息
+		ContactDao dao = new ContactDaoimplements();
+		Contact contact = dao.findByID(id);
+		if(contact == null){
+			response.sendRedirect(request.getContextPath() + "/ListContact");
+		}
+		
+		
+		
 	}
 
 	/**
@@ -49,19 +52,7 @@ public class QueryContactServlet extends HttpServlet {
 		 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
-		out.println("  <BODY>");
-		out.print("    This is ");
-		out.print(this.getClass());
-		out.println(", using the POST method");
-		out.println("  </BODY>");
-		out.println("</HTML>");
-		out.flush();
-		out.close();
+		doGet(request, response);
 	}
 
 }
