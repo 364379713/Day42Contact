@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
 /**
  * 通过的DAO层，主要负责数据库的增删改查
  * 这个类定义两个方法：
@@ -21,7 +23,7 @@ import org.apache.commons.beanutils.BeanUtils;
  *
  */
 public class BaseDao {
-
+	ComboPooledDataSource pool = new ComboPooledDataSource();
 	//初始化参数
 	private Connection conn;
 	private PreparedStatement pstmt;
@@ -35,7 +37,10 @@ public class BaseDao {
 	public void update(String sql, Object[] paramsValue){
 		try {
 			//1.数据库链接
-			conn = JDBCUtils.getConnection();
+			//conn = JDBCUtils.getConnection();
+			
+			//1.-C3P0链接
+			conn = pool.getConnection();
 			//2.获取PreparedStatement
 			pstmt = conn.prepareStatement(sql);
 			
@@ -74,7 +79,10 @@ public class BaseDao {
 			T t = null;
 			
 			//3.链接数据库
-			conn = JDBCUtils.getConnection();
+			//conn = JDBCUtils.getConnection();
+			
+			//3.-c3p0链接方法
+			conn = pool.getConnection();
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -124,7 +132,17 @@ public class BaseDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtils.close(conn, pstmt, rs);
+			//1.JDBCUtile.链接数据库释放方法
+			//JDBCUtils.close(conn, pstmt, rs);
+			//2.c3p0方法链接数据库释放方法
+			try {
+				rs.close();
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return null;
