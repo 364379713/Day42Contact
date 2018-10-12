@@ -58,7 +58,17 @@ public class BaseDao {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally{
-			JDBCUtils.close(conn, pstmt);
+			//1.JDBCUtiles链接数据库释放
+			//JDBCUtils.close(conn, pstmt);
+			//2.C3P0连接数据库释放
+			try {
+				rs.close();
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
