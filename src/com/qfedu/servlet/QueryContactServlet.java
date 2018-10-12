@@ -34,10 +34,75 @@ public class QueryContactServlet extends HttpServlet {
 		Contact contact = dao.findByID(id);
 		if(contact == null){
 			response.sendRedirect(request.getContextPath() + "/ListContact");
+			return;
 		}
 		
+		//3.把查询到的数据展示到修改页面
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
 		
+		String html = "";
+		html += "<!DOCTYPE html>";
+		html += "<html>";
+		html += "<head>";
+		html += "<title>添加联系人</title>";
+		html += "<meta charset='utf-8'>";
+		html += "</head>";
+		html += "<body>";
+		html += "<form action='UpdateContactServlet?id="+ contact.getId()+"' method='post'>";
+		html += "<table align='center' width='500'>";
+		html += "<tr>";
+		html += "<th colspan='2'>添加联系人</th>";
+		html += "</tr>";
+		html += "<tr>";
+		html += "<td>姓名</td>";
+		html += "<td><input type=text name=name value="+contact.getName()+"></td>";
+		html += "</tr>";
+		html += "<tr>";
 		
+		html += "<td>性别</td>";
+		if(contact.getGender().equals('男')){
+			html += "<td>";
+			html += "<input type='radio' name='gender' value='男' checked/>男";
+			html += "<input type='radio' name='gender' value='女' />女";
+			html += "</td>";
+		} else {
+			html += "<td>";
+			html += "<input type='radio' name='gender' value='男' />男";
+			html += "<input type='radio' name='gender' value='女' checked />女";
+			html += "</td>";
+		}
+		
+		html += "</tr>";
+		html += "<tr>";
+		html += "<td>年龄</td>";
+		html += "<td>";
+		html += "<input type=text name=age value=" + contact.getAge() + ">";
+		html += "</td>";
+		html += "</tr>";
+		html += "<tr>";
+		html += "<td>电话</td>";
+		html += "<td><input type='text' name='tel' value=" + contact.getTel() + "></td>";
+		html += "</tr>";
+		html += "<tr>";
+		html += "<td>QQ</td>";
+		html += "<td><input type='text' name='qq' value=" + contact.getQq() + "></td>";
+		html += "</tr>";
+		html += "<tr>";
+		html += "<td>Email</td>";
+		html += "<td><input type='text' name='email' value=" + contact.getEmail() + "></td>";
+		html += "</tr>";
+		html += "<tr>";
+		html += "<th colspan='2'>";
+		html += "<input type='submit' value='提交' />";
+		html += "</th>";
+		html += "</tr>";
+		html += "</table>";
+		html += "</form>";
+		html += "</body>";
+		html += "</html>";
+		
+		response.getWriter().write(html);
 	}
 
 	/**

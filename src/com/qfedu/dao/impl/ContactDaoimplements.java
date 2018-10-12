@@ -40,7 +40,7 @@ public class ContactDaoimplements extends BaseDao implements ContactDao {
 
 	@Override
 	public void updateContact(Contact contact) {
-		sql = "update contact set name = ?, gender = ?, age = ?, tel = ? "
+		sql = "update contact set name = ?, gender = ?, age = ?, tel = ?, "
 				+ "qq = ?, email = ? where id = ?";
 		List list = new ArrayList();
 		
